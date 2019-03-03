@@ -1,9 +1,9 @@
-var diamondData;
+var musicdata;
 
 // d3.csv("featuresdf.csv").then(function(data) {
 d3.csv("spotify.csv").then(function(data) {
 
-    let musicdata = data;
+    musicdata = data;
 
     //Select the div
     let q3 = d3.select("#viz");
@@ -27,11 +27,11 @@ d3.csv("spotify.csv").then(function(data) {
     const loMin = d3.min(musicdata, d => d['loudness']);
     const loMax = d3.max(musicdata, d => d['loudness']);
 
-
+    console.log(duMax);
 
     //Scales
-    yScale = d3.scaleLinear().domain([1, 0]).range([0,700]);
-    xScale = d3.scaleLinear().domain([0, 1000000]).range([0, 700]);
+    yScale = d3.scaleLinear().domain([eMin, eMax]).range([chartheight,0]);
+    xScale = d3.scaleLinear().domain([0, 1000000]).range([0, chartwidth]);
     rScale = d3.scaleLinear().domain([loMin, loMax]).range([1, 7]);
     colorScale = d3.scaleSequential(d3.interpolateCool).domain([0, liMax])
 
@@ -39,8 +39,8 @@ d3.csv("spotify.csv").then(function(data) {
     svg.append("rect")
         .attr("x", margin["left"])
         .attr("y", margin["top"])
-        .attr("height", chartwidth)
-        .attr("width", chartheight)
+        .attr("height", chartheight)
+        .attr("width", chartwidth)
         .attr("id","viz-background")
         .attr("fill", "#1c1c1c");
 
@@ -52,12 +52,12 @@ d3.csv("spotify.csv").then(function(data) {
       if (musicdata[k].duration_ms != 'NaN' && musicdata[k].energy != 'NaN'){
         svgb2.append("circle")
 
-        .attr("cx",xScale(musicdata[k].duration_ms)+margin["left"])
-        .attr("cy",yScale(musicdata[k].energy)+margin["top"])
-        .attr("r",rScale(musicdata[k].loudness))
-        .style("fill", colorScale(musicdata[k].liveness))
-        .attr("opacity",.7);
-          }
+          .attr("cx",xScale(musicdata[k].duration_ms)+margin["left"])
+          .attr("cy",yScale(musicdata[k].energy)+margin["top"])
+          .attr("r",rScale(musicdata[k].loudness))
+          .style("fill", colorScale(musicdata[k].liveness))
+          .attr("opacity",.7);
+        }
 
     }
 
